@@ -103,7 +103,7 @@ evaluator = Agent(
     
 # Create evaluation task
 evaluation_task = Task(
-   Description="""
+   description="""
    Evaluate this JIRA description and determine if the summary is well-written:
     
     CURRENT SUMMARY: {summary}
