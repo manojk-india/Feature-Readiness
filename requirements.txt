@@ -4,4 +4,5 @@ crewai
 matplotlib
 chainlit
 speechrecognition
+fpdf
 wave
