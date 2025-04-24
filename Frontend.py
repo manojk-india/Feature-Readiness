@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import os
 from utils import *
 from main import *
-import wave
+import wave, time
 # This is where the frontend chainlit part starts............
 os.environ["CHAINLIT_AUTH_SECRET"]="my_secret_key"
 
@@ -52,41 +52,30 @@ async def start():
         author="Assistant"
     ).send() 
      
-
 @cl.step(type="tool")
-async def process1(message):
-    await process_query(message)
+async def image_pusher():
+    image1= cl.Image(path='Report/missing_values_dashboard.png', name="Missing values", display="inline")
+    image2= cl.Image(path='Report/Bad_values_dashboard.png', name="Low Quality Data", display="inline")
 
-    # with open("generated_files/output.txt", "r") as f:
-    #     output_content = f.read()
-    try:
-        image1= cl.Image(path='Report/missing_values_dashboard.png', name="Jira Hygiene", display="inline")
-        image2= cl.Image(path='Report/Bad_values_dashboard.png', name="Jira Hygiene", display="inline")
-        df= pd.read_csv("data/Not-Good-issues.csv") 
-    except FileNotFoundError:
-        print("File not found. Please check the file path." )
+    await cl.Message(
+        content="Jira Bad Values Dashboard",    
+        elements=[image2],
+    ).send() 
 
     await cl.Message(
         content="Jira Missing Values Dashboard",
         elements=[image1],
     ).send()
-    await cl.Message(
-        content="Jira Bad Values Dashboard",    
 
-        elements=[image2],
-    ).send() 
+    return "images pushed successfully"
 
-    await cl.Message(
-            content="Here's the list of features lacking Feature-Readiness :",
-            elements=[
-                cl.Dataframe(
-                    data=df, 
-                    display="inline",
-                    name="JIRA Data",
-                
-                )
-            ]
-            ).send()
+
+     
+@cl.step(type="tool")
+async def process1(message):
+    await process_query(message)
+
+
      # Added missing send() for the second message
     return "Process1 completed successfully"
 
@@ -220,7 +209,38 @@ async def process_message(message):
     """Main message processing handler"""
     
 
-    tool_res = await process1(message.content)
+    await process1(message.content)
+
+    image1= cl.Image(path='Report/missing_values_dashboard.png', name="Missing values", display="inline")
+    image2= cl.Image(path='Report/Bad_values_dashboard.png', name="Low Quality Data", display="inline")
+
+    await cl.Message(
+        content="Jira Missing Values Dashboard",
+        elements=[image1],
+    ).send()
+
+    time.sleep(1)
+
+    await cl.Message(
+        content="Jira Bad Values Dashboard",    
+        elements=[image2],
+    ).send() 
+
+    time.sleep(1)
+
+    
+    df= pd.read_csv("data/Not-Good-issues.csv") 
+
+    await cl.Message(
+            content="Here's the list of features lacking Feature-Readiness :",
+            elements=[
+                cl.Dataframe(
+                    data=df, 
+                    display="inline",
+                    name="JIRA Data",
+                )
+            ]
+            ).send()
 
     await cl.Message(
         content="Click to view specific missing entries:",
@@ -231,7 +251,6 @@ async def process_message(message):
 
         ]
     ).send()
-    
 
     
 

@@ -760,7 +760,7 @@
       "self": "https://wellsfargo-jira-test.atlassian.net/rest/agile/1.0/issue/10015",
       "key": "DIS-4",
       "fields": {
-        "statuscategorychangedate": "2025-04-16T22:35:33.120+0530",
+        "statuscategorychangedate": "2025-04-24T16:18:29.489+0530",
         "issuetype": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/issuetype/10000",
           "id": "10000",
@@ -826,14 +826,14 @@
           }
         },
         "fixVersions": [],
-        "customfield_10034": null,
         "statusCategory": {
-          "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/statuscategory/2",
-          "id": 2,
-          "key": "new",
-          "colorName": "blue-gray",
-          "name": "To Do"
+          "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/statuscategory/4",
+          "id": 4,
+          "key": "indeterminate",
+          "colorName": "yellow",
+          "name": "In Progress"
         },
+        "customfield_10034": null,
         "aggregatetimespent": null,
         "resolution": null,
         "customfield_10036": null,
@@ -889,19 +889,19 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-24T12:44:02.682+0530",
+        "updated": "2025-04-24T16:18:29.488+0530",
         "status": {
-          "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
-          "description": "",
-          "iconUrl": "https://wellsfargo-jira-test.atlassian.net/",
-          "name": "Backlog",
-          "id": "10003",
+          "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/3",
+          "description": "This issue is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://wellsfargo-jira-test.atlassian.net/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
           "statusCategory": {
-            "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/statuscategory/2",
-            "id": 2,
-            "key": "new",
-            "colorName": "blue-gray",
-            "name": "To Do"
+            "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
           }
         },
         "components": [],
@@ -1258,7 +1258,7 @@
       "self": "https://wellsfargo-jira-test.atlassian.net/rest/agile/1.0/issue/10017",
       "key": "DIS-6",
       "fields": {
-        "statuscategorychangedate": "2025-04-16T22:35:34.167+0530",
+        "statuscategorychangedate": "2025-04-24T16:18:58.800+0530",
         "issuetype": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/issuetype/10000",
           "id": "10000",
@@ -1324,14 +1324,14 @@
           }
         },
         "fixVersions": [],
-        "customfield_10034": null,
         "statusCategory": {
-          "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/statuscategory/2",
-          "id": 2,
-          "key": "new",
-          "colorName": "blue-gray",
-          "name": "To Do"
+          "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/statuscategory/4",
+          "id": 4,
+          "key": "indeterminate",
+          "colorName": "yellow",
+          "name": "In Progress"
         },
+        "customfield_10034": null,
         "aggregatetimespent": null,
         "resolution": null,
         "customfield_10036": null,
@@ -1387,19 +1387,19 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-24T12:43:04.058+0530",
+        "updated": "2025-04-24T16:18:58.799+0530",
         "status": {
-          "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
-          "description": "",
-          "iconUrl": "https://wellsfargo-jira-test.atlassian.net/",
-          "name": "Backlog",
-          "id": "10003",
+          "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/3",
+          "description": "This issue is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://wellsfargo-jira-test.atlassian.net/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
           "statusCategory": {
-            "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/statuscategory/2",
-            "id": 2,
-            "key": "new",
-            "colorName": "blue-gray",
-            "name": "To Do"
+            "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
           }
         },
         "components": [

@@ -16,11 +16,11 @@ And once re-submitted, the reminders should stop.",['RTB'],TES1,TP-5,PRD22532 - 
 DIS-4,10002,Launch AI-powered personal financial assistant,Description for feature 4 for DIS,"* Analyze monthly spending and categorize into predefined buckets.
 * Alert users if they spend 20% more than usual in any category.
 * Recommend saving plans based on income and spending history.
-* Should support user queries like 'How much did I spend on food last month ?'.",['CTB'],,TP-3,PRD19252 - Claims and recovery | CTB - New feature,100800,2025-02-05,To Do
+* Should support user queries like 'How much did I spend on food last month ?'.",['CTB'],,TP-3,PRD19252 - Claims and recovery | CTB - New feature,100800,2025-02-05,In Progress
 DIS-5,10000,Redesign the business loan application portal,Users should be able to do stuff related to disputes. This is kind of needed for credit card things.,,['RTB'],TES1,TP-1,PRD89252 - Recovery | RTB - New feature,115200,2025-12-17,To Do
 DIS-6,10002,Allow customers to add payees using mobile number,Users should be able to add a new payee to their beneficiary list using the recipient's mobile number if it’s linked to a UPI ID or bank account.,"Given a customer wants to add a payee,
 When they enter a mobile number,
-Then the payee is added.",['CTB'],APS1,TP-3,PRD79902 - recovery | CTB - Enhancement/New feature,93600,2025-02-25,To Do
+Then the payee is added.",['CTB'],APS1,TP-3,PRD79902 - recovery | CTB - Enhancement/New feature,93600,2025-02-25,In Progress
 DIS-7,10001,Introduce scheduled payments for recurring bills,"Retail banking users should be able to schedule automatic payments for recurring bills (e.g., utilities, insurance premiums). This feature should support adding/editing/deleting schedules and send reminders 1 day before the scheduled payment.","Given a user has set up a scheduled bill payment,
 When the scheduled date arrives,
 Then the system should automatically process the payment using the saved funding account,
