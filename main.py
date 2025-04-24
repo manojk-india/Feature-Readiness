@@ -17,7 +17,7 @@ def find_board_in_string(board_names, text):
 query=find_board_in_string(["APS", "DIS", "TES"],query_user)
 
 # GuardRail
-if query not in ["APS", "DIS", "TES"]:
+if not query:
     print("Board Not found.")
 
 
