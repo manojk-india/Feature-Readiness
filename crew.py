@@ -102,8 +102,8 @@ evaluator = Agent(
     )
     
 # Create evaluation task
-evaluation_task = Task(
-   Description="""
+evaluation_task2 = Task(
+   description="""
    Evaluate this JIRA description and determine if the summary is well-written:
     
     CURRENT SUMMARY: {summary}
@@ -132,7 +132,7 @@ evaluation_task = Task(
 # Create and execute crew
 crew = Crew(
     agents=[evaluator],
-    tasks=[evaluation_task],
+    tasks=[evaluation_task2],
 )
 
 def evaluate_summary(summary,description):

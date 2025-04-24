@@ -889,7 +889,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-24T10:09:01.201+0530",
+        "updated": "2025-04-24T12:44:02.682+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
           "description": "",
@@ -944,7 +944,7 @@
           "accountType": "atlassian"
         },
         "subtasks": [],
-        "customfield_10040": "2025-12-30",
+        "customfield_10040": "2025-02-05",
         "customfield_10042": "* Analyze monthly spending and categorize into predefined buckets.\n* Alert users if they spend 20% more than usual in any category.\n* Recommend saving plans based on income and spending history.\n* Should support user queries like 'How much did I spend on food last month ?'.",
         "reporter": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/user?accountId=712020%3Acc03e21d-3190-4e55-90d0-4ffa41861bda",
@@ -1387,7 +1387,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-23T21:18:19.849+0530",
+        "updated": "2025-04-24T12:43:04.058+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
           "description": "",
@@ -1448,7 +1448,7 @@
           "accountType": "atlassian"
         },
         "subtasks": [],
-        "customfield_10040": "2025-12-30",
+        "customfield_10040": "2025-02-25",
         "customfield_10042": "Given a customer wants to add a payee,\nWhen they enter a mobile number,\nThen the payee is added.",
         "customfield_10043": "PRD79902 - recovery | CTB - Enhancement/New feature",
         "reporter": {
@@ -1639,7 +1639,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-23T21:19:12.867+0530",
+        "updated": "2025-04-24T12:43:24.575+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
           "description": "",
@@ -1700,7 +1700,7 @@
           "accountType": "atlassian"
         },
         "subtasks": [],
-        "customfield_10040": "2025-12-30",
+        "customfield_10040": "2025-07-17",
         "customfield_10042": "Given a user has set up a scheduled bill payment,\nWhen the scheduled date arrives,\nThen the system should automatically process the payment using the saved funding account,\nAnd an SMS and email confirmation should be sent,\nAnd if the account has insufficient balance, the user should be notified and the transaction retried once in 24 hours.",
         "reporter": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/user?accountId=712020%3Acc03e21d-3190-4e55-90d0-4ffa41861bda",

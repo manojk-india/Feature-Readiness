@@ -1,9 +1,12 @@
+import io
+from tempfile import NamedTemporaryFile
 import chainlit as cl
 import speech_recognition as sr
 from dataclasses import dataclass
 import os
 from utils import *
-
+from main import *
+import wave
 # This is where the frontend chainlit part starts............
 os.environ["CHAINLIT_AUTH_SECRET"]="my_secret_key"
 
@@ -43,7 +46,7 @@ async def set_starters():
 async def start():
     """Initialize the chat interface"""
    
-    welcome_message="Please enter yoyur prompt : "
+    welcome_message="Please enter your prompt! "
     await cl.Message(
         content=welcome_message,
         author="Assistant"
@@ -54,22 +57,27 @@ async def start():
 async def process1(message):
     await process_query(message)
 
-    with open("generated_files/output.txt", "r") as f:
-        output_content = f.read()
+    # with open("generated_files/output.txt", "r") as f:
+    #     output_content = f.read()
     try:
-        df = pd.read_csv("generated_files/output.csv")
-        csv_download = "generated_files/output.csv"
+        image1= cl.Image(path='Report/missing_values_dashboard.png', name="Jira Hygiene", display="inline")
+        image2= cl.Image(path='Report/Bad_values_dashboard.png', name="Jira Hygiene", display="inline")
+        df= pd.read_csv("data/Not-Good-issues.csv") 
     except FileNotFoundError:
-        df = "output.csv not found."
-        csv_download = None
+        print("File not found. Please check the file path." )
 
     await cl.Message(
-        content=f'''We found that...
-        {output_content}''',
+        content="Jira Missing Values Dashboard",
+        elements=[image1],
     ).send()
+    await cl.Message(
+        content="Jira Bad Values Dashboard",    
+
+        elements=[image2],
+    ).send() 
 
     await cl.Message(
-            content="Here's the processed data:",
+            content="Here's the list of features lacking Feature-Readiness :",
             elements=[
                 cl.Dataframe(
                     data=df, 
@@ -79,12 +87,7 @@ async def process1(message):
                 )
             ]
             ).send()
-    image = cl.Image(path='jira_hygiene_dashboard2.png', name="Jira Hygene", display="inline")
-    await cl.Message(
-        content="Jira Hygene Dashboard",
-        elements=[image],
-    ).send()
-
+     # Added missing send() for the second message
     return "Process1 completed successfully"
 
 @cl.step(type="tool")
@@ -209,34 +212,40 @@ async def process_audio():
         # Handle any exceptions that might occur during processing
         await cl.Message(content=f"Error processing audio: {str(e)}").send()
 
-@cl.action_callback("missing_epic")
-async def show_missing_entries1(action: cl.Action):
-    data=load_data()
 
-    df= filter_missing(data,"epic_id")
+
+
+@cl.on_message
+async def process_message(message):
+    """Main message processing handler"""
+    
+
+    tool_res = await process1(message.content)
+
+    await cl.Message(
+        content="Click to view specific missing entries:",
+        actions=[
+            cl.Action(name="over_due", icon="mouse-pointer-click",payload={"value": "EPIC ?"},label="overdue"),
+            cl.Action(name="low_quality_acceptance_criteria", icon="mouse-pointer-click",payload={"value": " Description ?"},label="Low quality Acceptance Criteria"),
+            cl.Action(name="vague_summary",icon="mouse-pointer-click",payload={"value": "Criteria ?"},label="Vague Summary"),
+
+        ]
+    ).send()
+    
+
+    
+
+   
+
+@cl.action_callback("over_due")
+async def show_over_due(action: cl.Action):
+    # save_rows_with_empty_column_and_low_quality_data("description")
+    df= pd.read_csv("data/overdue.csv")
     if(df.empty):
-        await cl.Message(content="No missing epic entries found").send()
+        await cl.Message(content="No overdue entries found").send()
     else:
         await cl.Message(
-            content="Entries missing the epic ID's",
-            elements=[
-                cl.Dataframe(
-                    data=df, 
-                    display="inline",
-                    name="Missing epic ids",
-                )
-            ]
-            ).send()
-       
-@cl.action_callback("missing_desc")
-async def show_missing_entries2(action: cl.Action):
-    data=load_data()
-    df= filter_missing(data,"description")
-    if(df.empty):
-        await cl.Message(content="No missing desciption entries found").send()
-    else:
-        await cl.Message(
-            content="Entries missing the description:",
+            content="Features which are overdue:",
             elements=[
                 cl.Dataframe(
                     data=df, 
@@ -245,68 +254,85 @@ async def show_missing_entries2(action: cl.Action):
                 )
             ]
             ).send()
+        
+    await cl.Message(
+        content="Click to view specific missing entries:",
+        actions=[
+            cl.Action(name="over_due", icon="mouse-pointer-click",payload={"value": "EPIC ?"},label="overdue"),
+            cl.Action(name="low_quality_acceptance_criteria", icon="mouse-pointer-click",payload={"value": " Description ?"},label="Low quality Acceptance Criteria"),
+            cl.Action(name="vague_summary",icon="mouse-pointer-click",payload={"value": "Criteria ?"},label="Vague Summary"),
 
-
-@cl.action_callback("missing_criteria")
-async def show_missing_entries3(action: cl.Action):
-    
-    data=load_data()
-
-    df= filter_missing(data, "acceptance_criteria")
+        ]
+    ).send()
+@cl.action_callback("low_quality_acceptance_criteria")
+async def show_low_quality_acceptance_criteria(action: cl.Action):
+    save_rows_with_empty_column_and_low_quality_data("Acceptance_result")
+    df= pd.read_csv("data/user_specific_need.csv")
     if(df.empty):
-        await cl.Message(content="No missing acceptance criteria entries found").send()
+        await cl.Message(content="All features have good Acceptance Criteria.").send()
     else:
         await cl.Message(
-            content="Entries missing the acceptance criteria:",
+            content="Entries with low quality acceptance criteria",
             elements=[
                 cl.Dataframe(
                     data=df, 
                     display="inline",
-                    name="Missing criteria",
+                    name="Low quality acceptance criteria",
                 )
             ]
-        ).send()
-
-
-
-
-
-
-
-
-@cl.on_message
-async def process_message(message):
-    """Main message processing handler"""
-    # Validate input length
-    if len(message.content) > 500:
-        await cl.Message(
-            content=f"⚠️ Input too long. Maximum 500 characters allowed.",
-            author="System"
-        ).send()
-
-    # if is_jira_related(message):
-    #     tool_res = await process1(message)
-    # else:
-    #     await cl.Message(
-    #         content="❌ Not a valid JIRA query.",
-    #         author="System"
-    #     ).send()
-
-    tool_res = await process1(message.content)
-
+            ).send()
+        create_acceptance_improvement_report(csv_file="data/user_specific_need.csv", pdf_file="Report/acceptance_report.pdf")
+    
+        output_file = "Report/acceptance_report.pdf"
+        if output_file and os.path.exists(output_file):
+                        await cl.Message(
+                            content="Download report here!.",
+                            elements=[cl.File(name=os.path.basename(output_file), path=output_file)]
+                        ).send()
     await cl.Message(
         content="Click to view specific missing entries:",
         actions=[
-            cl.Action(name="missing_epic", icon="mouse-pointer-click",payload={"value": "EPIC ?"},label="missing epic ID's"),
-            cl.Action(name="missing_desc", icon="mouse-pointer-click",payload={"value": " Description ?"},label="missing description"),
-            cl.Action(name="missing_criteria",icon="mouse-pointer-click",payload={"value": "Criteria ?"},label="missing acceptance criteria"),
+            cl.Action(name="over_due", icon="mouse-pointer-click",payload={"value": "EPIC ?"},label="overdue"),
+            cl.Action(name="low_quality_acceptance_criteria", icon="mouse-pointer-click",payload={"value": " Description ?"},label="Low quality Acceptance Criteria"),
+            cl.Action(name="vague_summary",icon="mouse-pointer-click",payload={"value": "Criteria ?"},label="Vague Summary"),
+
         ]
     ).send()
+        
+@cl.action_callback("vague_summary")
+async def show_vague_summary(action: cl.Action):
+    save_rows_with_empty_column_and_low_quality_data("summary_result")
+    df= pd.read_csv("data/user_specific_need.csv")
+    if(df.empty):
+        await cl.Message(content="All features have good summaries").send()
+    else:
+        await cl.Message(
+            content="Entries with vague summaries",
+            elements=[
+                cl.Dataframe(
+                    data=df, 
+                    display="inline",
+                    name="Vague Summaries",
+                )
+            ]
+            ).send()
+        create_summary_report(csv_file="data/user_specific_need.csv", pdf_file="Report/summary_report.pdf")
+    
+        output_file = "Report/summary_report.pdf"
+        if output_file and os.path.exists(output_file):
+                        await cl.Message(
+                            content="Download the report here!.",
+                            elements=[cl.File(name=os.path.basename(output_file), path=output_file)]
+                        ).send()
+    await cl.Message(
+        content="Click to view specific missing entries:",
+        actions=[
+            cl.Action(name="over_due", icon="mouse-pointer-click",payload={"value": "EPIC ?"},label="overdue"),
+            cl.Action(name="low_quality_acceptance_criteria", icon="mouse-pointer-click",payload={"value": " Description ?"},label="Low quality Acceptance Criteria"),
+            cl.Action(name="vague_summary",icon="mouse-pointer-click",payload={"value": "Criteria ?"},label="Vague Summary"),
 
-   
-
-
-
+        ]
+    ).send()
     
 def configure_chainlit_app():
     """Configure Chainlit application settings"""
@@ -320,8 +346,6 @@ def configure_chainlit_app():
     )
 if __name__ == "__main__":
     # Make sure the generated_files directory exists
-    if not os.path.exists("generated_files"):
-        os.makedirs("generated_files")
     configure_chainlit_app()
 
 

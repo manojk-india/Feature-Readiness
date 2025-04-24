@@ -15,7 +15,9 @@ import numpy as np
 
 from crew import *
 
-
+import pandas as pd
+from fpdf import FPDF
+import ast
 
 
 load_dotenv()
@@ -173,7 +175,7 @@ def filter_rows_with_missing_values_or_low_quality_data() -> None:
         csv_input: Path to the original CSV file
         csv_output: Path to save the filtered CSV file
     """
-    csv_input="data/FInal_API.csv"
+    csv_input="data/Final_API.csv"
     csv_output="data/Not-Good-issues.csv"
     df = pd.read_csv(csv_input)
     
@@ -187,12 +189,23 @@ def filter_rows_with_missing_values_or_low_quality_data() -> None:
     summary_condition = df['summary_result'].fillna('').str.strip() == 'Needs Improvement'
 
     # need to add rows with overdue condition....
+    # Convert Due_date to datetime
+    df['Due_date'] = pd.to_datetime(df['Due_date'], errors='coerce')
+    current_date = datetime.now()
+
+    # Separate the conditions for clarity and correct operation
+    overdue_condition = (
+        (df['status'].fillna('').str.strip() != 'Done') & 
+        (df['Due_date'] < current_date) & 
+        (df['Due_date'].notna())
+    )
     
-    # Combine conditions: missing_any OR acceptance_condition OR summary_condition
-    combined_condition = missing_any | acceptance_condition | summary_condition
+    # Combine conditions: missing_any OR acceptance_condition OR summary_condition OR overdue_condition
+    combined_condition = missing_any | acceptance_condition | summary_condition | overdue_condition
     
     # Filter rows
     filtered_df = df[combined_condition]
+
     
     # Save filtered rows to new CSV
     filtered_df.to_csv(csv_output, index=False)
@@ -302,6 +315,7 @@ def process_evaluations():
     df["Acceptance_improvement"] = None
     df["summary_result"] = ""
     df["summary_suggestion"] = ""
+
     
     # Process each row
     total_rows = len(df)
@@ -513,3 +527,136 @@ def create_Bad_values_dashboard(missing_counts: dict, output_file: str = 'Report
     
     return output_file
 
+
+
+def clean_latin1(text):
+    if not isinstance(text, str):
+        return ''
+    replacements = {
+        '\u2018': "'", '\u2019': "'", '\u201c': '"', '\u201d': '"',
+        '\u2013': '-', '\u2014': '-', '\u2026': '...',
+    }
+    for k, v in replacements.items():
+        text = text.replace(k, v)
+    return text.encode('latin-1', 'replace').decode('latin-1')
+
+class PDFReport(FPDF):
+    def header(self):
+        self.image("wells-image.png", x=10, y=8, w=60)  # Adjust path/size as needed
+        self.ln(20)
+        self.set_font('helvetica', 'B', 14)
+        self.cell(0, 10, 'JIRA Summary Evaluation Report', 0, 1, 'C')
+        self.ln(5)
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('helvetica', 'I', 8)
+        self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
+
+def create_summary_report(csv_file="data/Final_API.csv", pdf_file="Report/summary_report.pdf"):
+    df = pd.read_csv(csv_file)
+
+    pdf = PDFReport()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    pdf.set_font('helvetica', '', 11)
+
+    for idx, row in df.iterrows():
+        pdf.set_font('helvetica', 'B', 12)
+        pdf.cell(0, 10, clean_latin1(f"Feature Key: {row.get('key', '')}"), ln=True)
+        pdf.set_font('helvetica', '', 11)
+        pdf.multi_cell(0, 8, clean_latin1(f"Summary: {row.get('summary', '')}"))
+        pdf.ln(1)
+        pdf.set_font('helvetica', 'B', 11)
+        pdf.cell(0, 10, clean_latin1('Summary Evaluation Result:'), ln=True)
+        pdf.set_font('helvetica', '', 11)
+        pdf.multi_cell(0, 8, clean_latin1(str(row.get('summary_result', ''))))
+        pdf.ln(2)
+        pdf.set_font('helvetica', 'B', 11)
+        pdf.cell(0, 10, clean_latin1('Suggested Improved Summary:'), ln=True)
+        pdf.set_font('helvetica', '', 11)
+        suggestion = row.get('summary_suggestion', '')
+        if suggestion and str(suggestion).strip():
+            pdf.multi_cell(0, 8, clean_latin1(str(suggestion)))
+        else:
+            pdf.cell(0, 8, 'None', ln=True)
+        pdf.ln(10)
+        pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+        pdf.ln(10)
+
+    pdf.output(pdf_file)
+
+class PDFReport1(FPDF):
+    def header(self):
+        self.image("wells-image.png", x=10, y=8, w=60)  # Adjust path/size as needed
+        self.ln(20)
+        self.set_font('helvetica', 'B', 14)
+        self.cell(0, 10, 'Acceptance_crieteria evaluation Report', 0, 1, 'C')
+        self.ln(5)
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('helvetica', 'I', 8)
+        self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
+
+def create_acceptance_improvement_report(csv_file="data/user_specific_need.csv", pdf_file="Report/acceptance_report.pdf"):
+    df = pd.read_csv(csv_file)
+
+    pdf = PDFReport1()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    pdf.set_font('helvetica', '', 11)  # Use built-in font
+
+    for idx, row in df.iterrows():
+        pdf.set_font('helvetica', 'B', 12)
+        pdf.cell(0, 10, clean_latin1(f"Feature Key: {row.get('key', '')}"), ln=True)
+        pdf.set_font('helvetica', '', 11)
+
+        pdf.multi_cell(0, 8, clean_latin1(f"Summary: {row.get('summary', '')}"))
+        pdf.ln(1)
+        pdf.multi_cell(0, 8, clean_latin1(f"Description: {row.get('description', '')}"))
+        pdf.ln(1)
+        pdf.multi_cell(0, 8, clean_latin1(f"Acceptance Criteria: {row.get('Acceptance_crieteria', '')}"))
+        pdf.ln(5)
+
+        improvement_str = row.get('Acceptance_improvement', '{}')
+        try:
+            improvement_dict = ast.literal_eval(improvement_str) if isinstance(improvement_str, str) else {}
+        except Exception:
+            improvement_dict = {}
+
+        strengths = improvement_dict.get('strengths', [])
+        improvement_areas = improvement_dict.get('improvement_areas', [])
+        revised_version = improvement_dict.get('revised_version', '')
+
+        pdf.set_font('helvetica', 'B', 11)
+        pdf.cell(0, 10, clean_latin1('Strengths:'), ln=True)
+        pdf.set_font('helvetica', '', 11)
+        if strengths:
+            for s in strengths:
+                pdf.multi_cell(0, 8, clean_latin1(f"- {s}"))
+        else:
+            pdf.cell(0, 8, 'None', ln=True)
+
+        pdf.ln(2)
+        pdf.set_font('helvetica', 'B', 11)
+        pdf.cell(0, 10, clean_latin1('Improvement Areas:'), ln=True)
+        pdf.set_font('helvetica', '', 11)
+        if improvement_areas:
+            for imp in improvement_areas:
+                pdf.multi_cell(0, 8, clean_latin1(f"- {imp}"))
+        else:
+            pdf.cell(0, 8, 'None', ln=True)
+
+        pdf.ln(2)
+        pdf.set_font('helvetica', 'B', 11)
+        pdf.cell(0, 10, clean_latin1('Revised Version:'), ln=True)
+        pdf.set_font('helvetica', '', 11)
+        if revised_version:
+            pdf.multi_cell(0, 8, clean_latin1(revised_version))
+        else:
+            pdf.cell(0, 8, 'None', ln=True)
+
+        pdf.ln(10)
+        pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+        pdf.ln(10)
+
+    pdf.output(pdf_file)

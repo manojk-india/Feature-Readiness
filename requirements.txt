@@ -4,3 +4,4 @@ crewai
 matplotlib
 chainlit
 speechrecognition
+wave
