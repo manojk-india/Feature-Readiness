@@ -107,7 +107,7 @@ def json_to_csv() -> None:
     ]
 
     # Read JSON data
-    with open(json_file, 'r') as f:
+    with open(json_file, 'r',encoding='utf-8') as f:
         data = json.load(f)
     
     # Prepare CSV rows
@@ -164,7 +164,7 @@ def count_empty_values(csv_file: str) -> dict:
 import pandas as pd
 
 
-def filter_rows_with_missing() -> None:
+def filter_rows_with_missing_values_or_low_quality_data() -> None:
     """
     Reads a CSV file, filters rows with at least one missing value in any column,
     and saves those rows to a new CSV file.
@@ -173,21 +173,33 @@ def filter_rows_with_missing() -> None:
         csv_input: Path to the original CSV file
         csv_output: Path to save the filtered CSV file
     """
-    csv_input="data/API.csv"
+    csv_input="data/FInal_API.csv"
     csv_output="data/Not-Good-issues.csv"
     df = pd.read_csv(csv_input)
     
-    # Replace empty strings with NaN to treat them as missing
-    df.replace('', pd.NA, inplace=True)
+    # Condition for missing values in any column
+    missing_any = df.isna().any(axis=1)
     
-    # Filter rows where any column has missing value
-    filtered_df = df[df.isna().any(axis=1)]
+    # Condition for Acceptance_result is 'Not Well Documented'
+    acceptance_condition = df['Acceptance_result'].fillna('').str.strip() == 'Not Well Documented'
+    
+    # Condition for summary_result is 'Needs Improvement'
+    summary_condition = df['summary_result'].fillna('').str.strip() == 'Needs Improvement'
+
+    # need to add rows with overdue condition....
+    
+    # Combine conditions: missing_any OR acceptance_condition OR summary_condition
+    combined_condition = missing_any | acceptance_condition | summary_condition
+    
+    # Filter rows
+    filtered_df = df[combined_condition]
     
     # Save filtered rows to new CSV
     filtered_df.to_csv(csv_output, index=False)
 
 
-def save_rows_with_empty_column(column_name: str) -> None:
+# This function will be used when user asks abt some missing column
+def save_rows_with_empty_column_and_low_quality_data(column_name: str) -> None:
     """
     Save rows to a new CSV where the specified column is empty or null.
 
@@ -196,19 +208,35 @@ def save_rows_with_empty_column(column_name: str) -> None:
         column_name: Column name to check for empty/null values.
         csv_output: Path to save the filtered CSV file.
     """
-    csv_input="data/API.csv"
-    csv_output="data/missing.csv"
+    csv_input="data/Final_API.csv"
+    csv_output="data/user_specific_need.csv"
 
     df = pd.read_csv(csv_input)
-    
-    # Treat empty strings as NaN for the specified column
-    df[column_name].replace('', pd.NA, inplace=True)
-    
-    # Filter rows where the column is NaN (empty or null)
-    filtered_df = df[df[column_name].isna()]
-    
-    # Save filtered rows to the output CSV
-    filtered_df.to_csv(csv_output, index=False)
+
+    if(column_name=="Acceptance_result"):
+        acceptance_issue = df['Acceptance_result'].isna() | (df['Acceptance_result'] == 'Not Well Documented')
+        new_df=df[acceptance_issue]
+        new_df.to_csv(csv_output, index=False)
+
+    elif(column_name=="summary_result"):
+        summary_issue = df['summary_result'] == 'Needs Improvement'
+        new_df=df[summary_issue]
+        new_df.to_csv(csv_output, index=False)
+
+    elif(column_name=="Over Due Features"):
+        df2 = pd.read_csv("data/overdue.csv")
+        df2.to_csv(csv_output, index=False)
+    else:
+        # Treat empty strings as NaN for the specified column
+        df[column_name].replace('', pd.NA, inplace=True)
+        
+        # Filter rows where the column is NaN (empty or null)
+        filtered_df = df[df[column_name].isna()]
+        
+        # Save filtered rows to the output CSV
+        filtered_df.to_csv(csv_output, index=False)
+
+
 
 def save_overdue_tasks() -> int:
     """
@@ -221,7 +249,7 @@ def save_overdue_tasks() -> int:
     Returns:
         Number of overdue tasks found
     """
-    csv_input="data/API.csv"
+    csv_input="data/Final_API.csv"
     csv_output="data/overdue.csv"
     # Read the CSV file
     df = pd.read_csv(csv_input)

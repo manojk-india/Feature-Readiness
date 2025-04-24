@@ -3,26 +3,26 @@ DIS-1,10000,Enable biometric authentication for mobile banking app,"As a retail 
 When they open the mobile banking app,
 Then they should be prompted for biometric verification,
 And upon successful authentication, they should be logged in automatically,
-And if biometric authentication fails, they should be redirected to the password login screen.",,APS1,TP-1,PRD20252 - Claims | RTB - Enhancement/New feature,108000,30-12-2025,To Do
+And if biometric authentication fails, they should be redirected to the password login screen.",,APS1,TP-1,PRD20252 - Claims | RTB - Enhancement/New feature,108000,2025-12-30,To Do
 DIS-2,10003,Add transaction dispute option for credit card users,"Credit card customers should be able to raise a dispute for specific transactions through the mobile and web apps. This feature should allow users to select a reason, upload supporting documents, and track the status of their dispute.","Given a user is viewing their credit card transaction history,
 When they click ""Dispute Transaction"" on an eligible entry,
 Then they should be prompted to select a dispute reason and optionally upload evidence,
-And upon submission, the dispute case should be created and visible in a ""Disputes"" tab with a tracking ID.",['CTB'],APS1,TP-4,PRD202782 - recovery | CTB - New feature,3600,30-12-2025,To Do
+And upon submission, the dispute case should be created and visible in a ""Disputes"" tab with a tracking ID.",['CTB'],APS1,TP-4,PRD202782 - recovery | CTB - New feature,3600,2025-12-30,To Do
 DIS-3,10004,Fix notifications,"To comply with regulatory guidelines, customers with expiring KYC documents must receive timely notifications. These should include push notifications, emails, and in-app banners, starting 30 days prior to expiry.","Given a customer's KYC document is expiring in less than 30 days,
 When they log into any digital banking channel,
 Then they should see a notification banner about re-verification,
 And an email and push notification should be triggered every 10 days until re-submission,
-And once re-submitted, the reminders should stop.",['RTB'],TES1,TP-5,PRD22532 - Claims | RTB - New feature,140400,30-12-2025,To Do
+And once re-submitted, the reminders should stop.",['RTB'],TES1,TP-5,PRD22532 - Claims | RTB - New feature,140400,2025-12-30,To Do
 DIS-4,10002,Launch AI-powered personal financial assistant,Description for feature 4 for DIS,"* Analyze monthly spending and categorize into predefined buckets.
 * Alert users if they spend 20% more than usual in any category.
 * Recommend saving plans based on income and spending history.
-* Should support user queries like “How much did I spend on food last month?",['CTB'],,TP-3,PRD19252 - Claims and recovery | CTB - New feature,100800,30-12-2025,To Do
-DIS-5,10000,Redesign the business loan application portal,Users should be able to do stuff related to disputes. This is kind of needed for credit card things.,,['RTB'],TES1,TP-1,PRD89252 - Recovery | RTB - New feature,115200,17-12-2025,To Do
+* Should support user queries like 'How much did I spend on food last month ?'.",['CTB'],,TP-3,PRD19252 - Claims and recovery | CTB - New feature,100800,2025-12-30,To Do
+DIS-5,10000,Redesign the business loan application portal,Users should be able to do stuff related to disputes. This is kind of needed for credit card things.,,['RTB'],TES1,TP-1,PRD89252 - Recovery | RTB - New feature,115200,2025-12-17,To Do
 DIS-6,10002,Allow customers to add payees using mobile number,Users should be able to add a new payee to their beneficiary list using the recipient's mobile number if it’s linked to a UPI ID or bank account.,"Given a customer wants to add a payee,
 When they enter a mobile number,
-Then the payee is added.",['CTB'],APS1,TP-3,PRD79902 - recovery | CTB - Enhancement/New feature,93600,30-12-2025,To Do
+Then the payee is added.",['CTB'],APS1,TP-3,PRD79902 - recovery | CTB - Enhancement/New feature,93600,2025-12-30,To Do
 DIS-7,10001,Introduce scheduled payments for recurring bills,"Retail banking users should be able to schedule automatic payments for recurring bills (e.g., utilities, insurance premiums). This feature should support adding/editing/deleting schedules and send reminders 1 day before the scheduled payment.","Given a user has set up a scheduled bill payment,
 When the scheduled date arrives,
 Then the system should automatically process the payment using the saved funding account,
 And an SMS and email confirmation should be sent,
-And if the account has insufficient balance, the user should be notified and the transaction retried once in 24 hours.",['RTB'],EBSNF,TP-2,PRD20782 - Claims and recovery | RTB - Enhancement,36000,30-12-2025,To Do
+And if the account has insufficient balance, the user should be notified and the transaction retried once in 24 hours.",['RTB'],EBSNF,TP-2,PRD20782 - Claims and recovery | RTB - Enhancement,36000,2025-12-30,To Do

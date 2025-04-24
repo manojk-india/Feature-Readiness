@@ -637,7 +637,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-23T21:23:13.483+0530",
+        "updated": "2025-04-24T09:59:07.943+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
           "description": "",
@@ -699,7 +699,7 @@
         },
         "subtasks": [],
         "customfield_10040": "2025-12-30",
-        "customfield_10042": "Given a customer\u2019s KYC document is expiring in less than 30 days,\nWhen they log into any digital banking channel,\nThen they should see a notification banner about re-verification,\nAnd an email and push notification should be triggered every 10 days until re-submission,\nAnd once re-submitted, the reminders should stop.",
+        "customfield_10042": "Given a customer's KYC document is expiring in less than 30 days,\nWhen they log into any digital banking channel,\nThen they should see a notification banner about re-verification,\nAnd an email and push notification should be triggered every 10 days until re-submission,\nAnd once re-submitted, the reminders should stop.",
         "customfield_10043": "PRD22532 - Claims | RTB - New feature",
         "reporter": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/user?accountId=712020%3Acc03e21d-3190-4e55-90d0-4ffa41861bda",
@@ -889,7 +889,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-23T21:16:18.377+0530",
+        "updated": "2025-04-24T10:09:01.201+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
           "description": "",
@@ -945,7 +945,7 @@
         },
         "subtasks": [],
         "customfield_10040": "2025-12-30",
-        "customfield_10042": "* Analyze monthly spending and categorize into predefined buckets.\n* Alert users if they spend 20% more than usual in any category.\n* Recommend saving plans based on income and spending history.\n* Should support user queries like \u201cHow much did I spend on food last month?\u201d",
+        "customfield_10042": "* Analyze monthly spending and categorize into predefined buckets.\n* Alert users if they spend 20% more than usual in any category.\n* Recommend saving plans based on income and spending history.\n* Should support user queries like 'How much did I spend on food last month ?'.",
         "reporter": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/user?accountId=712020%3Acc03e21d-3190-4e55-90d0-4ffa41861bda",
           "accountId": "712020:cc03e21d-3190-4e55-90d0-4ffa41861bda",

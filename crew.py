@@ -103,8 +103,8 @@ evaluator = Agent(
     
 # Create evaluation task
 evaluation_task = Task(
-    description="""
-    Evaluate this JIRA description and determine if it's well-written:
+   Description="""
+   Evaluate this JIRA description and determine if the summary is well-written:
     
     CURRENT SUMMARY: {summary}
     
@@ -112,19 +112,20 @@ evaluation_task = Task(
     
     Focus ONLY on:
     1. IS the summary well-written
-    2. Is it describing the description well and providing clear insights
+    2. Is it representing what the feature is supposed to do
+    3. Is it clear and concise
     
     Provide ONLY:
-    - "GOOD" or "NEEDS IMPROVEMENT" verdict on the description
+    - "GOOD" or "NEEDS IMPROVEMENT" verdict on the summary based on description
     - If needed, a suggested improved summary that better reflects the description
-    Summary is like heading ..it should be short and sweet
+    Summary is like heading ..it should be clear and concise and should represent what the feature is supposed to do.
     Even if it is decent classify it as GOOD but also give your suggested summary that captures the key benefits and functionality of the feature
     """,
     agent=evaluator,
     output_pydantic=Evaluated_summary,
     expected_output="""
-    classification:'Good' or 'Needs Improvement'
-    improved_version: improved summary based on crieteria
+    classification: 'Good' or 'Needs Improvement'
+    improved_version: improved summary based on criteria
     """
 )
 
