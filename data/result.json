@@ -133,7 +133,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-23T21:13:20.488+0530",
+        "updated": "2025-04-24T21:35:14.029+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
           "description": "",
@@ -156,7 +156,7 @@
           }
         ],
         "timeoriginalestimate": 108000,
-        "description": "As a retail banking customer, I want to log in to the mobile banking app using biometric authentication (Face ID or fingerprint), so I can securely access my account without typing my password each time. This should work on both iOS and Android, and fallback to password if biometric fails.",
+        "description": "As a retail banking customer, I want to log in to the mobile banking app using biometric authentication (Face ID or fingerprint), so I can securely access my account without typing my password each time. This should work on both iOS and Android, and fallback to password if biometric fails.\nvalue: Optimize System Stability , Reliability, and Processes, Increase the percentage of Transaction processing Products migrating to more efficient platform and efficiency enhancements.",
         "customfield_10010": null,
         "customfield_10011": null,
         "customfield_10012": null,
@@ -339,7 +339,7 @@
         "customfield_10029": null,
         "resolutiondate": null,
         "workratio": 0,
-        "lastViewed": null,
+        "lastViewed": "2025-04-24T22:53:06.739+0530",
         "watches": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/issue/DIS-2/watchers",
           "watchCount": 1,
@@ -385,7 +385,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-23T21:14:25.601+0530",
+        "updated": "2025-04-24T22:53:12.607+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
           "description": "",
@@ -408,7 +408,7 @@
           }
         ],
         "timeoriginalestimate": 115200,
-        "description": "Credit card customers should be able to raise a dispute for specific transactions through the mobile and web apps. This feature should allow users to select a reason, upload supporting documents, and track the status of their dispute.",
+        "description": "Credit card customers should be able to raise a dispute for specific transactions through the mobile and web apps. This feature should allow users to select a reason, upload supporting documents, and track the status of their dispute.\n\nvalue: Streamline Customer Interaction and Digital adoption by Increasing the adoption of self-serve digital capabilities. ( mobile\u00a0and\u00a0desktop\u00a0)",
         "customfield_10010": null,
         "customfield_10011": null,
         "customfield_10012": null,
@@ -591,7 +591,7 @@
         "customfield_10029": null,
         "resolutiondate": null,
         "workratio": 0,
-        "lastViewed": null,
+        "lastViewed": "2025-04-24T22:53:22.032+0530",
         "watches": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/issue/DIS-3/watchers",
           "watchCount": 1,
@@ -843,12 +843,12 @@
         "customfield_10029": null,
         "resolutiondate": null,
         "workratio": 0,
-        "lastViewed": null,
         "watches": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/issue/DIS-4/watchers",
           "watchCount": 1,
           "isWatching": false
         },
+        "lastViewed": "2025-04-24T22:53:55.717+0530",
         "created": "2025-04-16T22:35:32.724+0530",
         "customfield_10020": null,
         "customfield_10021": null,
@@ -889,7 +889,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-24T16:18:29.488+0530",
+        "updated": "2025-04-24T22:54:04.704+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/3",
           "description": "This issue is being actively worked on at the moment by the assignee.",
@@ -906,7 +906,7 @@
         },
         "components": [],
         "timeoriginalestimate": 100800,
-        "description": "Description for feature 4 for DIS",
+        "description": "Retail banking users should be able to schedule automatic payments for recurring bills (e.g., utilities, insurance premiums). This feature should support adding/editing/deleting schedules and send reminders 1 day before the scheduled payment.\n\nvalue: Streamline Customer Interaction and Digital adoption by Increasing the adoption of self-serve digital capabilities. ( mobile\u00a0and\u00a0desktop\u00a0)",
         "customfield_10010": null,
         "customfield_10011": null,
         "customfield_10012": null,
@@ -1089,7 +1089,7 @@
         "customfield_10029": null,
         "resolutiondate": null,
         "workratio": 0,
-        "lastViewed": null,
+        "lastViewed": "2025-04-24T22:53:34.127+0530",
         "watches": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/issue/DIS-5/watchers",
           "watchCount": 1,
@@ -1341,7 +1341,7 @@
         "customfield_10029": null,
         "resolutiondate": null,
         "workratio": 0,
-        "lastViewed": null,
+        "lastViewed": "2025-04-24T22:54:12.365+0530",
         "watches": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/issue/DIS-6/watchers",
           "watchCount": 1,
@@ -1387,7 +1387,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-24T16:18:58.799+0530",
+        "updated": "2025-04-24T22:54:16.208+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/3",
           "description": "This issue is being actively worked on at the moment by the assignee.",
@@ -1410,7 +1410,7 @@
           }
         ],
         "timeoriginalestimate": 93600,
-        "description": "Users should be able to add a new payee to their beneficiary list using the recipient's mobile number if it\u2019s linked to a UPI ID or bank account.",
+        "description": "Users should be able to add a new payee to their beneficiary list using the recipient's mobile number if it\u2019s linked to a UPI ID or bank account.\n\nvalue: Optimize System Stability , Reliability, and Processes, Increase the percentage of Transaction processing Products migrating to more efficient platform and efficiency\u00a0enhancements.",
         "customfield_10010": null,
         "customfield_10011": null,
         "customfield_10012": null,
@@ -1593,7 +1593,7 @@
         "customfield_10029": null,
         "resolutiondate": null,
         "workratio": 0,
-        "lastViewed": null,
+        "lastViewed": "2025-04-24T22:53:44.110+0530",
         "watches": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/issue/DIS-7/watchers",
           "watchCount": 1,
@@ -1639,7 +1639,7 @@
         "versions": [],
         "issuelinks": [],
         "assignee": null,
-        "updated": "2025-04-24T12:43:24.575+0530",
+        "updated": "2025-04-24T22:53:47.090+0530",
         "status": {
           "self": "https://wellsfargo-jira-test.atlassian.net/rest/api/2/status/10003",
           "description": "",
@@ -1662,7 +1662,7 @@
           }
         ],
         "timeoriginalestimate": 36000,
-        "description": "Retail banking users should be able to schedule automatic payments for recurring bills (e.g., utilities, insurance premiums). This feature should support adding/editing/deleting schedules and send reminders 1 day before the scheduled payment.",
+        "description": "Retail banking users should be able to schedule automatic payments for recurring bills (e.g., utilities, insurance premiums). This feature should support adding/editing/deleting schedules and send reminders 1 day before the scheduled payment.\n\nvalue: SME Risk and ensure sustainable system function\u00a0expertise.",
         "customfield_10010": null,
         "customfield_10011": null,
         "customfield_10012": null,

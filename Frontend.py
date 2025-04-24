@@ -51,32 +51,32 @@ async def start():
         content=welcome_message,
         author="Assistant"
     ).send() 
-     
-@cl.step(type="tool")
-async def image_pusher():
-    image1= cl.Image(path='Report/missing_values_dashboard.png', name="Missing values", display="inline")
-    image2= cl.Image(path='Report/Bad_values_dashboard.png', name="Low Quality Data", display="inline")
-
-    await cl.Message(
-        content="Jira Bad Values Dashboard",    
-        elements=[image2],
-    ).send() 
-
-    await cl.Message(
-        content="Jira Missing Values Dashboard",
-        elements=[image1],
-    ).send()
-
-    return "images pushed successfully"
 
 
      
 @cl.step(type="tool")
 async def process1(message):
     await process_query(message)
-
-
      # Added missing send() for the second message
+     
+    image1= cl.Image(path='Report/missing_values_dashboard.png', name="Missing values", display="inline")
+    image2= cl.Image(path='Report/Bad_values_dashboard.png', name="Low Quality Data", display="inline")
+
+    time.sleep(3)
+
+    await cl.Message(
+        content="Jira Missing Values Dashboard",
+        elements=[image1],
+    ).send()
+
+    time.sleep(1)
+
+    await cl.Message(
+        content="Jira Bad Values Dashboard",    
+        elements=[image2],
+    ).send() 
+
+    time.sleep(2)
     return "Process1 completed successfully"
 
 @cl.step(type="tool")
@@ -211,23 +211,7 @@ async def process_message(message):
 
     await process1(message.content)
 
-    image1= cl.Image(path='Report/missing_values_dashboard.png', name="Missing values", display="inline")
-    image2= cl.Image(path='Report/Bad_values_dashboard.png', name="Low Quality Data", display="inline")
-
-    await cl.Message(
-        content="Jira Missing Values Dashboard",
-        elements=[image1],
-    ).send()
-
-    time.sleep(1)
-
-    await cl.Message(
-        content="Jira Bad Values Dashboard",    
-        elements=[image2],
-    ).send() 
-
-    time.sleep(1)
-
+    time.sleep(3)
     
     df= pd.read_csv("data/Not-Good-issues.csv") 
 
@@ -242,13 +226,15 @@ async def process_message(message):
             ]
             ).send()
 
+    time.sleep(2)
+
     await cl.Message(
-        content="Click to view specific missing entries:",
+        content="",
         actions=[
             cl.Action(name="over_due", icon="mouse-pointer-click",payload={"value": "EPIC ?"},label="overdue"),
             cl.Action(name="low_quality_acceptance_criteria", icon="mouse-pointer-click",payload={"value": " Description ?"},label="Low quality Acceptance Criteria"),
             cl.Action(name="vague_summary",icon="mouse-pointer-click",payload={"value": "Criteria ?"},label="Vague Summary"),
-
+            cl.Action(name="Poor_OKR",icon="mouse-pointer-click",payload={"value": "Criteria ?"},label="Poor_OKR"),
         ]
     ).send()
 
@@ -345,6 +331,36 @@ async def show_vague_summary(action: cl.Action):
                             content="Download the report here!.",
                             elements=[cl.File(name=os.path.basename(output_file), path=output_file)]
                         ).send()
+    await cl.Message(
+        content="Click to view specific missing entries:",
+        actions=[
+            cl.Action(name="over_due", icon="mouse-pointer-click",payload={"value": "EPIC ?"},label="overdue"),
+            cl.Action(name="low_quality_acceptance_criteria", icon="mouse-pointer-click",payload={"value": " Description ?"},label="Low quality Acceptance Criteria"),
+            cl.Action(name="vague_summary",icon="mouse-pointer-click",payload={"value": "Criteria ?"},label="Vague Summary"),
+
+        ]
+    ).send()
+
+
+@cl.action_callback("Poor_OKR")
+async def show_low_quality_acceptance_criteria(action: cl.Action):
+    df= pd.read_csv("data/Final_API.csv")
+    filtered_df = df[df['OKR'] == "Not Good"]
+
+    if(df.empty):
+        await cl.Message(content="All features have good OKR's in their description").send()
+    else:
+        await cl.Message(
+            content="Entries with low quality OKR's",
+            elements=[
+                cl.Dataframe(
+                    data=filtered_df, 
+                    display="inline",
+                    name="Low quality OKR's",
+                )
+            ]
+            ).send()
+        
     await cl.Message(
         content="Click to view specific missing entries:",
         actions=[

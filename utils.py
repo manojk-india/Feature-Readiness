@@ -19,10 +19,18 @@ import pandas as pd
 from fpdf import FPDF
 import ast
 
+# imports for vector encoding
+from sentence_transformers import SentenceTransformer
+import numpy as np
+from numpy.linalg import norm
+
+import re
+
+
 
 load_dotenv()
 
-
+# Real time api fetching 
 def get_board_features(
     board_name: str,
     max_results: int = 100
@@ -81,7 +89,7 @@ def get_board_features(
     return {"features": all_issues}
 
 
-
+# converting response to csv file 
 def json_to_csv() -> None:
     """
     Convert Jira features JSON to CSV with specified fields
@@ -141,7 +149,7 @@ def json_to_csv() -> None:
         writer.writerows(rows)
 
 
-
+# returns a dict of value with column name and no of values missing
 def count_empty_values(csv_file: str) -> dict:
     """
     Count the number of empty (NaN or empty string) values in each column of the CSV file.
@@ -166,6 +174,7 @@ def count_empty_values(csv_file: str) -> dict:
 import pandas as pd
 
 
+# 
 def filter_rows_with_missing_values_or_low_quality_data() -> None:
     """
     Reads a CSV file, filters rows with at least one missing value in any column,
@@ -383,14 +392,14 @@ def count_separate_issues() -> dict:
     summary_issue_count = summary_issue.sum()
     
     return {
-        'acceptance_issue_count': int(acceptance_issue_count),
-        'summary_issue_count': int(summary_issue_count),
+        'poor_acceptance_crieteria': int(acceptance_issue_count),
+        'poor_summaries': int(summary_issue_count),
         'Overall_issues':len(df)
     }
 
 
 
-
+# Dashboard for missing value data 
 def create_missing_values_dashboard(missing_counts: dict, output_file: str = 'Report/missing_values_dashboard.png'):
     """
     Creates a professional dashboard visualizing missing values percentages
@@ -460,7 +469,7 @@ def create_missing_values_dashboard(missing_counts: dict, output_file: str = 'Re
 
 
 
-
+# Dashboard for low quality data
 def create_Bad_values_dashboard(missing_counts: dict, output_file: str = 'Report/Bad_values_dashboard.png'):
     """
     Creates a professional dashboard visualizing missing values percentages
@@ -503,7 +512,7 @@ def create_Bad_values_dashboard(missing_counts: dict, output_file: str = 'Report
                 va='center', fontsize=12, color='#333333')
     
     # Title and labels
-    ax.set_title('Bad Values Percentage per Column', fontsize=18, 
+    ax.set_title('Poor Qulaity values Percentage per Column', fontsize=18, 
                  fontweight='bold', color='#222222')
     ax.set_xlabel('Percentage (%)', fontsize=14)
     ax.set_xlim(0, max(percentages) + 10)
@@ -552,6 +561,7 @@ class PDFReport(FPDF):
         self.set_font('helvetica', 'I', 8)
         self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
 
+# summary report PDF
 def create_summary_report(csv_file="data/Final_API.csv", pdf_file="Report/summary_report.pdf"):
     df = pd.read_csv(csv_file)
 
@@ -597,6 +607,7 @@ class PDFReport1(FPDF):
         self.set_font('helvetica', 'I', 8)
         self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
 
+# acceptance crieteria report PDF 
 def create_acceptance_improvement_report(csv_file="data/user_specific_need.csv", pdf_file="Report/acceptance_report.pdf"):
     df = pd.read_csv(csv_file)
 
@@ -660,3 +671,97 @@ def create_acceptance_improvement_report(csv_file="data/user_specific_need.csv",
         pdf.ln(10)
 
     pdf.output(pdf_file)
+
+
+# checking for OKR value resembelence -- vector encoding
+def check_similarity(input_text, threshold=0.5):
+    """
+    Check if input_text is similar to at least one of the reference sentences.
+    
+    Args:
+        input_text (str): Input paragraph to check
+        threshold (float): Similarity threshold to consider as similar
+        
+    Returns:
+        bool: True if similar to at least one reference sentence, else False
+        dict: similarity scores for each reference sentence
+    """
+    # The 3 reference sentences
+    reference_sentences = [
+        "value:Mitigate SME Risk and ensure sustainable system function expertise",
+        "value:Optimize System Stability, Reliability, and Processes, Increase the percentage of Transaction processing Products migrating to more efficient platform and efficiency enhancements",
+        "value:Streamline Customer Interaction and Digital adoption by Increasing the adoption of self-serve digital capabilities (mobile and desktop)"
+    ]
+    
+    # Initialize the model
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    
+    # Encode the reference sentences
+    reference_embeddings = model.encode(reference_sentences)
+    
+    # Encode the input text
+    input_embedding = model.encode([input_text])[0]
+    
+    # Calculate cosine similarity between input and each reference
+    similarities = {}
+    for i, ref_sentence in enumerate(reference_sentences):
+        sim = np.dot(input_embedding, reference_embeddings[i]) / (norm(input_embedding) * norm(reference_embeddings[i]))
+        similarities[ref_sentence] = float(sim)
+    
+    # Check if similar to at least one reference sentence
+    is_similar = any(sim >= threshold for sim in similarities.values())
+    
+    print(input_text)
+    print(is_similar)
+    print(similarities)
+    return is_similar, similarities
+
+# function for extarcting the value 
+def extract_value_sentence(text):
+    # This regex finds 'value:' followed by any characters up to the first dot
+    match = re.search(r'(value:[^.]*)\.', text)
+    if match:
+        return match.group(1).strip()
+    return None
+
+# now function for iterating through all rows of CSV file and taking value sentence from description and evaluating its similarity
+def process_csv_and_check_okr() -> None:
+    """
+    Process CSV to check OKR alignment for each row's description.
+    
+    Args:
+        csv_input: Path to input CSV file
+        csv_output: Path to save processed CSV file
+        
+    Returns:
+        Processed DataFrame
+    """
+
+    csv_input="data/Final_API.csv"
+    csv_output="data/Final_API.csv"
+    # Read CSV file
+    df = pd.read_csv(csv_input)
+    
+    # Initialize OKR column with False
+    df['OKR'] ="Not Good"
+    
+    # Process each row
+    for idx, row in df.iterrows():
+        description = row.get('description')
+            
+        # Extract value from description
+        extracted_text = extract_value_sentence(description)
+        print(extracted_text)
+        
+        # Check similarity if extraction succeeded
+        if extracted_text:
+            is_similar, _ = check_similarity(extracted_text)
+            if is_similar:
+                df.at[idx, 'OKR'] = "Good"
+            else:
+                df.at[idx, 'OKR'] = "Not Good"
+    
+    # Save processed DataFrame
+    df.to_csv(csv_output, index=False)
+    return None
+

@@ -31,6 +31,13 @@ async def process_query(query_user):
     # # now checking acceptance_crieteria and summary and suggesting better changes and ading those to csv file itself 
     process_evaluations()
 
+    # OKR check in description column
+    process_csv_and_check_okr()
+
+    df=pd.read_csv("data/Final_API.csv")
+    num_false = (df['OKR'] == "Not Good").sum()
+
+
     # #Now we have to check all missing parameters
     missing_value=count_empty_values("data/API.csv")
 
@@ -44,24 +51,14 @@ async def process_query(query_user):
     # # No of features with bad acceptance crieteria and summary
     bad_value=count_separate_issues()
     bad_value["Over_due Features"]=no_of_over_due_features
+    bad_value["Poor_OKR's"]=num_false
 
 
     # # This creates a dashboard with any parameters we give == concentrating on quality
     create_Bad_values_dashboard(bad_value)
 
-
     # Filtering out all the Not-Good features both missing and bad quality of acceptance crieteria == Not-Good-issues
     filter_rows_with_missing_values_or_low_quality_data()
-
-    # # Filtering out features based on specific column name... can be invoked in runtime according to user input
-    # save_rows_with_empty_column_and_low_quality_data("Over Due Features")
-    # missing_report="Report/missing_values_dashboard.png"
-    # bad_values_dashboard="Report/Bad_values_dashboard.png"
-    # issue_list="data/Not-Good-issues.csv"
-
-    # return missing_report, bad_values_dashboard, issue_list
-
-# process_query("Feature readiness of DIS board") # Example input, replace with actual user input
 
 
 

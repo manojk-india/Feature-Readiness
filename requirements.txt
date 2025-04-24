@@ -6,3 +6,4 @@ chainlit
 speechrecognition
 fpdf
 wave
+sentence_transformers
