@@ -264,6 +264,8 @@ async def show_over_due(action: cl.Action):
 
         ]
     ).send()
+
+
 @cl.action_callback("low_quality_acceptance_criteria")
 async def show_low_quality_acceptance_criteria(action: cl.Action):
     save_rows_with_empty_column_and_low_quality_data("Acceptance_result")
@@ -353,18 +355,3 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-
-
-
-# eg: if query is about backlog health for sprint 8 or how is backlog looking for sprint 8 for CDF board
-# data_to_query: All issues in Sprint 8 for CDF board  
-# specific_need: Count of all issues in Sprint 8 for CDF board and RTB and CTB issue counts seperately for CDF board in Sprint 8.
-
-
-# eg3 if query is total number of backlogs in CDF board in Sprint 8
-# data_to_query: All backlogs in CDF board in Sprint 8
-# specific_need: Number of backlogs in CDF board in Sprint 8
